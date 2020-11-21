@@ -1,7 +1,7 @@
 extern void __fastcall__ ym_init();
-extern void __fastcall__ delay();
+extern void __fastcall__ delay(char *tiks);
+extern void __fastcall__ init_read (char *data);
 extern char __fastcall__ getBytes();
-extern char __fastcall__ getByte (char *data);
 extern char __fastcall__ ym_write_reg(char data);
 extern char __fastcall__ ym_write_data(char data);
 extern char __fastcall__ ym_write_reg_A1(char data);

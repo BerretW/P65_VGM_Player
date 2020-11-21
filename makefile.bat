@@ -14,3 +14,4 @@ move *.s ..\output
 cd ..\output
 
 ld65 -C ..\config\APP_RAM_DISK.cfg -m main.map main.o utils.o acia.o ym2612.o interrupts.o vectors.o ..\library\p65.lib -o ..\output\RAM.bin
+ld65 -C ..\config\APP.cfg -m main.map main.o utils.o acia.o ym2612.o interrupts.o vectors.o ..\library\p65.lib -o ..\output\ROM.bin

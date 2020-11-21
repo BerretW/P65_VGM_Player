@@ -8,7 +8,7 @@
 ; Checks for a BRK instruction and returns from all valid interrupts.
 
 ;.import   _stop
-.import   _acia_putc
+.import   _acia_putc, _PlaySong
 .export   _irq_int, _nmi_int
 
 .segment  "CODE"
@@ -25,9 +25,9 @@ _nmi_int:   CLI
 ; Maskable interrupt (IRQ) service routine
 _irq_int:   SEI
             PHA
-            LDA #41
-            jsr _acia_putc
+            JSR _PlaySong
             PLA
+            CLI
             RTI
 
 ;_irq_int1:  PHX                    ; Save X register contents to stack

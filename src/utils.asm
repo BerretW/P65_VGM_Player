@@ -19,7 +19,16 @@
 
 .code
 
-
+;Set up VIA
+_timer_setup:	        lda #$0
+							        sta VIA_T1C_L    ; init timer
+											LDA #$FF
+							        sta VIA_T1C_H
+							        lda #$40
+							        sta VIA_ACR     ; T1 continuous mode
+							        lda #$c0
+							        sta VIA_IER     ; enable T1
+							        RTS
 
 _set_bank:
 					STA BANKDISK

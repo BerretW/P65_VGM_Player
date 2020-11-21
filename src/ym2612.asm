@@ -2,7 +2,8 @@
 .include "macros_65C02.inc65"
 
 .zeropage
-
+song_addr:			.res 2
+_song_pos:			.res 2
 .smart		on
 .autoimport	on
 .case		on
@@ -20,19 +21,16 @@
 .export _delay
 .export _ym_setreg
 .export _ym_setreg_A1
-.export _getByte
 .export _getBytes
 .export _set_song_pos
 .export _song_pos
 .export _play_song_from_bank
-
+.export _init_read
 .import _acia_putc
 
 
 .data
 
-_song_pos:
-	.word	$0100
 .code
 
 _play_song_from_bank:	STA BANK_BASE
@@ -155,6 +153,24 @@ _ym_write_reg_A1:   PHA
                     RTS
 
 ; ---------------------------------------------------------------
+; void __near__ init_read (char *data)
+; ---------------------------------------------------------------
+
+.segment	"CODE"
+
+.proc	_init_read: near
+
+.segment	"CODE"
+_init_read:
+						;STA ACIA_DATA
+						;STX ACIA_DATA
+
+						STA _song_pos
+						STX _song_pos+1
+						RTS
+
+.endproc
+; ---------------------------------------------------------------
 ; char __near__ getBytes (void)
 ; ---------------------------------------------------------------
 
@@ -163,82 +179,46 @@ _ym_write_reg_A1:   PHA
 .proc	_getBytes: near
 
 .segment	"CODE"
+_getBytes:  	;LDA _song_pos
+							;STA ACIA_DATA
+							;LDA _song_pos+1
+							;STA ACIA_DATA
 
-	inc     _song_pos
-	bne     L0002
-	inc     _song_pos+1
-L0002:	lda     _song_pos+1
-	cmp     #$40
-	bne     L0003
-	lda     _song_pos
-	bne     L0003
-	stz     _song_pos
-	stz     _song_pos+1
-	jsr     _switch_bank
-L0003:	lda     #<(BANKDISK)
-	sta     ptr1
-	lda     #>(BANKDISK)
-	clc
-	adc     _song_pos+1
-	sta     ptr1+1
-	ldy     _song_pos
-	ldx     #$00
-	lda     (ptr1),y
-	rts
+							;LDX #0
+							LDA (_song_pos)
+							;STA ACIA_DATA
 
-.endproc
-
-
-; ---------------------------------------------------------------
-; char __near__ getByte (char *data)
-; ---------------------------------------------------------------
-
-.segment	"CODE"
-
-.proc	_getByte: near
-
-.segment	"CODE"
-
-	jsr     pushax
-	inc     _song_pos
-	bne     L0002
-	inc     _song_pos+1
-L0002:	lda     _song_posi+1
-	cmp     #$40
-	bne     L0003
-	lda     _song_pos
-	bne     L0003
-	stz     _song_pos
-	stz     _song_pos+1
-	jsr     _switch_bank
-L0003:	jsr     ldax0sp
-	clc
-	adc     _song_pos
-	sta     ptr1
-	txa
-	adc     _song_pos+1
-	sta     ptr1+1
-	lda     (ptr1)
-	;jsr     _acia_putc
-	jsr     _delay
-	jsr     ldax0sp
-	clc
-	adc     _song_pos
-	sta     ptr1
-	txa
-	adc     _song_pos+1
-	sta     ptr1+1
-	ldx     #$00
-	lda     (ptr1)
-	jmp     incsp2
+							LDX _song_pos
+							INX
+							STX _song_pos
+							BNE _end
+							LDY _song_pos+1
+							INY
+							STY _song_pos+1
+							BNE _end
+							INC BANK_BASE
+							LDA #0
+							STA _song_pos
+							LDA #$80
+							STA _song_pos + 1
+_end:					RTS
 
 .endproc
 
-_delay:					LDX #$1
-_delay1:				DEX
+
+
+
+_delay:					TAY
+								INX
+								;LDX #1
+								;LDY #1
+_delay1:				DEY
                 BNE _delay1
-                RTS
-_delay2:					LDX #$FF
-_delay3:				DEX
-                BNE _delay3
+_delay2:				DEX
+								BNE _delay1
+_dend:           RTS
+
+__delay2:				LDX #$FF
+__delay3:				DEX
+                BNE __delay3
                 RTS

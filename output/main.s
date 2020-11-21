@@ -17,15 +17,13 @@
 	.import		_acia_getc
 	.import		_ym_init
 	.import		_delay
-	.import		_getByte
+	.import		_init_read
+	.import		_getBytes
 	.import		_ym_setreg
 	.import		_ym_setreg_A1
-	.import		_play_song_from_bank
 	.import		_format_bank
 	.import		_write_to_BANK
-	.import		_switch_bank
 	.import		_set_bank
-	.export		_song
 	.export		_c
 	.export		_line
 	.export		_note
@@ -38,1277 +36,11 @@
 	.export		_playing
 	.export		_cmd
 	.export		_print_f
-	.export		_getByt
 	.export		_PlaySong
 	.export		_main
 
 .segment	"DATA"
 
-_song:
-	.byte	$56
-	.byte	$67
-	.byte	$6D
-	.byte	$20
-	.byte	$EC
-	.byte	$04
-	.byte	$00
-	.byte	$00
-	.byte	$60
-	.byte	$01
-	.byte	$00
-	.byte	$00
-	.byte	$99
-	.byte	$9E
-	.byte	$36
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$56
-	.byte	$04
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$81
-	.byte	$0F
-	.byte	$00
-	.byte	$67
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$32
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$09
-	.byte	$00
-	.byte	$10
-	.byte	$00
-	.byte	$B6
-	.byte	$0A
-	.byte	$75
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$4C
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$52
-	.byte	$22
-	.byte	$08
-	.byte	$52
-	.byte	$27
-	.byte	$00
-	.byte	$52
-	.byte	$B4
-	.byte	$C0
-	.byte	$52
-	.byte	$B5
-	.byte	$C0
-	.byte	$52
-	.byte	$B6
-	.byte	$C0
-	.byte	$53
-	.byte	$B4
-	.byte	$C0
-	.byte	$53
-	.byte	$B5
-	.byte	$C0
-	.byte	$53
-	.byte	$B6
-	.byte	$C0
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$28
-	.byte	$02
-	.byte	$52
-	.byte	$28
-	.byte	$03
-	.byte	$52
-	.byte	$28
-	.byte	$04
-	.byte	$52
-	.byte	$28
-	.byte	$05
-	.byte	$52
-	.byte	$28
-	.byte	$06
-	.byte	$50
-	.byte	$9F
-	.byte	$50
-	.byte	$BF
-	.byte	$50
-	.byte	$DF
-	.byte	$50
-	.byte	$FF
-	.byte	$52
-	.byte	$30
-	.byte	$00
-	.byte	$52
-	.byte	$40
-	.byte	$16
-	.byte	$52
-	.byte	$50
-	.byte	$1F
-	.byte	$52
-	.byte	$60
-	.byte	$09
-	.byte	$52
-	.byte	$70
-	.byte	$0C
-	.byte	$52
-	.byte	$80
-	.byte	$5F
-	.byte	$52
-	.byte	$90
-	.byte	$00
-	.byte	$52
-	.byte	$34
-	.byte	$00
-	.byte	$52
-	.byte	$44
-	.byte	$17
-	.byte	$52
-	.byte	$54
-	.byte	$1F
-	.byte	$52
-	.byte	$64
-	.byte	$08
-	.byte	$52
-	.byte	$74
-	.byte	$00
-	.byte	$52
-	.byte	$84
-	.byte	$FF
-	.byte	$52
-	.byte	$94
-	.byte	$00
-	.byte	$52
-	.byte	$38
-	.byte	$00
-	.byte	$52
-	.byte	$48
-	.byte	$16
-	.byte	$52
-	.byte	$58
-	.byte	$1F
-	.byte	$52
-	.byte	$68
-	.byte	$09
-	.byte	$52
-	.byte	$78
-	.byte	$0C
-	.byte	$52
-	.byte	$88
-	.byte	$5F
-	.byte	$52
-	.byte	$98
-	.byte	$00
-	.byte	$52
-	.byte	$3C
-	.byte	$00
-	.byte	$52
-	.byte	$4C
-	.byte	$05
-	.byte	$52
-	.byte	$5C
-	.byte	$1F
-	.byte	$52
-	.byte	$6C
-	.byte	$00
-	.byte	$52
-	.byte	$7C
-	.byte	$00
-	.byte	$52
-	.byte	$8C
-	.byte	$0F
-	.byte	$52
-	.byte	$9C
-	.byte	$00
-	.byte	$52
-	.byte	$B0
-	.byte	$29
-	.byte	$52
-	.byte	$A4
-	.byte	$13
-	.byte	$52
-	.byte	$A0
-	.byte	$2B
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$64
-	.byte	$E3
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$31
-	.byte	$00
-	.byte	$52
-	.byte	$41
-	.byte	$16
-	.byte	$52
-	.byte	$51
-	.byte	$1F
-	.byte	$52
-	.byte	$61
-	.byte	$09
-	.byte	$52
-	.byte	$71
-	.byte	$0C
-	.byte	$52
-	.byte	$81
-	.byte	$5F
-	.byte	$52
-	.byte	$91
-	.byte	$00
-	.byte	$52
-	.byte	$35
-	.byte	$00
-	.byte	$52
-	.byte	$45
-	.byte	$17
-	.byte	$52
-	.byte	$55
-	.byte	$1F
-	.byte	$52
-	.byte	$65
-	.byte	$08
-	.byte	$52
-	.byte	$75
-	.byte	$00
-	.byte	$52
-	.byte	$85
-	.byte	$FF
-	.byte	$52
-	.byte	$95
-	.byte	$00
-	.byte	$52
-	.byte	$39
-	.byte	$00
-	.byte	$52
-	.byte	$49
-	.byte	$16
-	.byte	$52
-	.byte	$59
-	.byte	$1F
-	.byte	$52
-	.byte	$69
-	.byte	$09
-	.byte	$52
-	.byte	$79
-	.byte	$0C
-	.byte	$52
-	.byte	$89
-	.byte	$5F
-	.byte	$52
-	.byte	$99
-	.byte	$00
-	.byte	$52
-	.byte	$3D
-	.byte	$00
-	.byte	$52
-	.byte	$4D
-	.byte	$05
-	.byte	$52
-	.byte	$5D
-	.byte	$1F
-	.byte	$52
-	.byte	$6D
-	.byte	$00
-	.byte	$52
-	.byte	$7D
-	.byte	$00
-	.byte	$52
-	.byte	$8D
-	.byte	$0F
-	.byte	$52
-	.byte	$9D
-	.byte	$00
-	.byte	$52
-	.byte	$B1
-	.byte	$29
-	.byte	$52
-	.byte	$A5
-	.byte	$2A
-	.byte	$52
-	.byte	$A1
-	.byte	$D3
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$2B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$5B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$64
-	.byte	$E3
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$2B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2A
-	.byte	$52
-	.byte	$A1
-	.byte	$84
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$23
-	.byte	$52
-	.byte	$A1
-	.byte	$5B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$FF
-	.byte	$FF
-	.byte	$61
-	.byte	$15
-	.byte	$36
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2A
-	.byte	$52
-	.byte	$A1
-	.byte	$D3
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$2B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$5B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$64
-	.byte	$E3
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$2B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2A
-	.byte	$52
-	.byte	$A1
-	.byte	$D3
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2C
-	.byte	$52
-	.byte	$A1
-	.byte	$3B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$64
-	.byte	$E3
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$C5
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$FF
-	.byte	$FF
-	.byte	$61
-	.byte	$15
-	.byte	$36
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2A
-	.byte	$52
-	.byte	$A1
-	.byte	$D3
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$2B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$5B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$64
-	.byte	$E3
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2A
-	.byte	$52
-	.byte	$A1
-	.byte	$D3
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$23
-	.byte	$52
-	.byte	$A1
-	.byte	$5B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$64
-	.byte	$E3
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2A
-	.byte	$52
-	.byte	$A1
-	.byte	$D3
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$2B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$52
-	.byte	$A5
-	.byte	$2B
-	.byte	$52
-	.byte	$A1
-	.byte	$5B
-	.byte	$52
-	.byte	$28
-	.byte	$F1
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$58
-	.byte	$29
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$52
-	.byte	$28
-	.byte	$F0
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$52
-	.byte	$28
-	.byte	$00
-	.byte	$61
-	.byte	$FF
-	.byte	$FF
-	.byte	$61
-	.byte	$69
-	.byte	$21
-	.byte	$52
-	.byte	$28
-	.byte	$01
-	.byte	$61
-	.byte	$AC
-	.byte	$14
-	.byte	$66
-	.byte	$47
-	.byte	$64
-	.byte	$33
-	.byte	$20
-	.byte	$00
-	.byte	$01
-	.byte	$00
-	.byte	$00
-	.byte	$7A
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$53
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$67
-	.byte	$00
-	.byte	$61
-	.byte	$00
-	.byte	$20
-	.byte	$00
-	.byte	$4D
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$67
-	.byte	$00
-	.byte	$61
-	.byte	$00
-	.byte	$20
-	.byte	$00
-	.byte	$44
-	.byte	$00
-	.byte	$72
-	.byte	$00
-	.byte	$69
-	.byte	$00
-	.byte	$76
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$20
-	.byte	$00
-	.byte	$2F
-	.byte	$00
-	.byte	$20
-	.byte	$00
-	.byte	$47
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$6E
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$73
-	.byte	$00
-	.byte	$69
-	.byte	$00
-	.byte	$73
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$44
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$6C
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$6B
-	.byte	$00
-	.byte	$27
-	.byte	$00
-	.byte	$73
-	.byte	$00
-	.byte	$20
-	.byte	$00
-	.byte	$44
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$66
-	.byte	$00
-	.byte	$6C
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$4D
-	.byte	$00
-	.byte	$61
-	.byte	$00
-	.byte	$73
-	.byte	$00
-	.byte	$6B
-	.byte	$00
-	.byte	$20
-	.byte	$00
-	.byte	$54
-	.byte	$00
-	.byte	$72
-	.byte	$00
-	.byte	$61
-	.byte	$00
-	.byte	$63
-	.byte	$00
-	.byte	$6B
-	.byte	$00
-	.byte	$65
-	.byte	$00
-	.byte	$72
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
 _song_posi:
 	.word	$0100
 _bank:
@@ -3956,14 +2688,11 @@ _Chaos_emerald:
 	.byte	$00
 	.byte	$00
 	.byte	$00
-S0002:
-	.byte	$41,$70,$70,$61,$72,$74,$75,$73,$20,$56,$47,$4D,$20,$50,$6C,$61
-	.byte	$79,$65,$72,$20,$56,$61,$73,$20,$76,$69,$74,$61,$00
-S0004:
-	.byte	$46,$6F,$72,$6D,$61,$74,$75,$6A,$69,$20,$42,$61,$6E,$6B,$79,$00
 S0003:
+	.byte	$46,$6F,$72,$6D,$61,$74,$75,$6A,$69,$20,$42,$61,$6E,$6B,$79,$00
+S0002:
 	.byte	$5A,$61,$63,$69,$6E,$61,$6D,$20,$7A,$61,$70,$69,$73,$2E,$00
-S0005:
+S0004:
 	.byte	$53,$70,$6F,$75,$73,$74,$69,$6D,$20,$73,$6F,$6E,$67,$00
 S0001:
 	.byte	$4B,$6F,$6E,$65,$63,$20,$73,$6F,$6E,$67,$75,$00
@@ -3981,11 +2710,11 @@ _i:
 _i2:
 	.res	2,$00
 _CharL:
-	.res	2,$00
+	.res	1,$00
 _CharH:
-	.res	2,$00
+	.res	1,$00
 _playing:
-	.res	2,$00
+	.res	1,$00
 _cmd:
 	.res	1,$00
 
@@ -4008,52 +2737,7 @@ _cmd:
 .endproc
 
 ; ---------------------------------------------------------------
-; char __near__ getByt (char *data)
-; ---------------------------------------------------------------
-
-.segment	"CODE"
-
-.proc	_getByt: near
-
-.segment	"CODE"
-
-	jsr     pushax
-	inc     _song_posi
-	bne     L0002
-	inc     _song_posi+1
-L0002:	lda     _song_posi+1
-	cmp     #$40
-	bne     L0003
-	lda     _song_posi
-	bne     L0003
-	stz     _song_posi
-	stz     _song_posi+1
-	jsr     _switch_bank
-L0003:	jsr     ldax0sp
-	clc
-	adc     _song_posi
-	sta     ptr1
-	txa
-	adc     _song_posi+1
-	sta     ptr1+1
-	lda     (ptr1)
-	jsr     _acia_putc
-	jsr     _delay
-	jsr     ldax0sp
-	clc
-	adc     _song_posi
-	sta     ptr1
-	txa
-	adc     _song_posi+1
-	sta     ptr1+1
-	ldx     #$00
-	lda     (ptr1)
-	jmp     incsp2
-
-.endproc
-
-; ---------------------------------------------------------------
-; void __near__ PlaySong (char *data)
+; void __near__ PlaySong (void)
 ; ---------------------------------------------------------------
 
 .segment	"CODE"
@@ -4062,411 +2746,254 @@ L0003:	jsr     ldax0sp
 
 .segment	"CODE"
 
-	jsr     pushax
 	lda     #$01
 	sta     _playing
-	stz     _playing+1
-	jmp     L0007
-L0002:	jsr     ldax0sp
-	jsr     _getByte
+	jmp     L004B
+L0002:	jsr     _getBytes
 	sta     _cmd
+	ldx     #$00
 	lda     _cmd
 	cmp     #$50
-	jeq     L0008
+	jeq     L0007
 	cmp     #$52
-	jeq     L0009
+	jeq     L0008
 	cmp     #$53
-	jeq     L000A
+	jeq     L0009
 	cmp     #$61
-	jeq     L000B
+	jeq     L000A
 	cmp     #$62
-	jeq     L0097
+	jeq     L0015
 	cmp     #$63
-	jeq     L0098
+	jeq     L0016
 	cmp     #$66
-	jeq     L00A9
+	jeq     L004A
 	cmp     #$70
-	jeq     L0099
+	jeq     L003A
 	cmp     #$71
-	jeq     L009A
+	jeq     L003B
 	cmp     #$72
-	jeq     L009B
+	jeq     L003C
 	cmp     #$73
-	jeq     L009C
+	jeq     L003D
 	cmp     #$74
-	jeq     L009D
+	jeq     L003E
 	cmp     #$75
-	jeq     L009E
+	jeq     L003F
 	cmp     #$76
-	jeq     L009F
+	jeq     L0040
 	cmp     #$77
-	jeq     L00A0
+	jeq     L0041
 	cmp     #$78
-	jeq     L00A1
+	jeq     L0042
 	cmp     #$79
-	jeq     L00A2
+	jeq     L0043
 	cmp     #$7A
-	jeq     L00A3
+	jeq     L0044
 	cmp     #$7B
-	jeq     L00A4
+	jeq     L0045
 	cmp     #$7C
-	jeq     L00A5
+	jeq     L0046
 	cmp     #$7D
-	jeq     L00A6
+	jeq     L0047
 	cmp     #$7E
-	jeq     L00A7
+	jeq     L0048
 	cmp     #$7F
-	jeq     L00A8
-	jmp     L0007
-L0008:	jsr     ldax0sp
-	jsr     _getByte
+	jeq     L0049
+	jmp     L004B
+L0007:	jsr     _getBytes
 	sta     _CharL
-	stx     _CharL+1
+	ldx     #$00
+	lda     #$01
 	jsr     _delay
-	jmp     L0007
-L0009:	jsr     ldax0sp
-	jsr     _getByte
-	sta     _CharL
-	stx     _CharL+1
-	jsr     ldax0sp
-	jsr     _getByte
-	sta     _CharH
-	stx     _CharH+1
-	lda     _CharL
+	jmp     L004B
+L0008:	jsr     _getBytes
 	jsr     pusha
-	lda     _CharH
+	jsr     _getBytes
 	jsr     _ym_setreg
-	jmp     L0007
-L000A:	jsr     ldax0sp
-	jsr     _getByte
-	sta     _CharL
-	stx     _CharL+1
-	jsr     ldax0sp
-	jsr     _getByte
-	sta     _CharH
-	stx     _CharH+1
-	lda     _CharL
+	jmp     L004B
+L0009:	jsr     _getBytes
 	jsr     pusha
-	lda     _CharH
+	jsr     _getBytes
 	jsr     _ym_setreg_A1
-	jmp     L0007
-L000B:	jsr     ldax0sp
-	jsr     _getByte
+	jmp     L004B
+L000A:	jsr     _getBytes
 	sta     _CharL
-	stx     _CharL+1
-	jsr     ldax0sp
-	jsr     _getByte
+	jsr     _getBytes
 	sta     _CharH
-	stx     _CharH+1
 	stz     _i
 	stz     _i+1
-L000C:	lda     _i
+L000B:	lda     _i
 	ldx     _i+1
 	jsr     pushax
 	lda     _CharH
-	ldx     _CharH+1
-	jsr     tosicmp
-	beq     L0095
-	jpl     L0007
-L0095:	stz     _i2
+	jsr     tosicmp0
+	beq     L0038
+	jpl     L004B
+L0038:	stz     _i2
 	stz     _i2+1
-L0011:	lda     _i2
+L0010:	lda     _i2
 	ldx     _i2+1
 	jsr     pushax
 	lda     _CharL
-	ldx     _CharL+1
-	jsr     tosicmp
-	beq     L0096
-	bpl     L000E
-L0096:	jsr     _delay
+	jsr     tosicmp0
+	beq     L0039
+	bpl     L000D
+L0039:	ldx     #$00
+	lda     #$01
+	jsr     _delay
 	inc     _i2
-	bne     L0011
+	bne     L0010
 	inc     _i2+1
-	bra     L0011
-L000E:	inc     _i
-	bne     L000C
+	bra     L0010
+L000D:	inc     _i
+	bne     L000B
 	inc     _i+1
-	bra     L000C
-L0097:	stz     _i
-	stz     _i+1
-L0017:	lda     _i
-	cmp     #$E0
-	lda     _i+1
-	sbc     #$02
-	bvc     L001B
-	eor     #$80
-L001B:	jpl     L0007
+	bra     L000B
+L0015:	ldx     #$02
+	lda     #$DF
 	jsr     _delay
-	inc     _i
-	bne     L0017
-	inc     _i+1
-	bra     L0017
-L0098:	stz     _i
-	stz     _i+1
-L001E:	lda     _i
-	cmp     #$44
-	lda     _i+1
-	sbc     #$03
-	bvc     L0022
-	eor     #$80
-L0022:	jpl     L0007
+	jmp     L004B
+L0016:	ldx     #$03
+	lda     #$43
 	jsr     _delay
-	inc     _i
+	jmp     L004B
+L003A:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0018
+	inx
+L0018:	jsr     _delay
+	jmp     L004B
+L003B:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L001A
+	inx
+L001A:	jsr     _delay
+	jmp     L004B
+L003C:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L001C
+	inx
+L001C:	jsr     _delay
+	jmp     L004B
+L003D:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
 	bne     L001E
-	inc     _i+1
-	bra     L001E
-L0099:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0025:	lda     _i
-	cmp     #$02
-	lda     _i+1
-	sbc     #$00
-	bvc     L0029
-	eor     #$80
-L0029:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0025
-	inc     _i+1
-	bra     L0025
-L009A:	lda     #$01
-	sta     _i
-	stz     _i+1
-L002C:	lda     _i
-	cmp     #$03
-	lda     _i+1
-	sbc     #$00
-	bvc     L0030
-	eor     #$80
-L0030:	jpl     L0007
-	jsr     _delay
-	inc     _i
+	inx
+L001E:	jsr     _delay
+	jmp     L004B
+L003E:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0020
+	inx
+L0020:	jsr     _delay
+	jmp     L004B
+L003F:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0022
+	inx
+L0022:	jsr     _delay
+	jmp     L004B
+L0040:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0024
+	inx
+L0024:	jsr     _delay
+	jmp     L004B
+L0041:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0026
+	inx
+L0026:	jsr     _delay
+	jmp     L004B
+L0042:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0028
+	inx
+L0028:	jsr     _delay
+	jmp     L004B
+L0043:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L002A
+	inx
+L002A:	jsr     _delay
+	bra     L004B
+L0044:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
 	bne     L002C
-	inc     _i+1
-	bra     L002C
-L009B:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0033:	lda     _i
-	cmp     #$04
-	lda     _i+1
-	sbc     #$00
-	bvc     L0037
-	eor     #$80
-L0037:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0033
-	inc     _i+1
-	bra     L0033
-L009C:	lda     #$01
-	sta     _i
-	stz     _i+1
-L003A:	lda     _i
-	cmp     #$05
-	lda     _i+1
-	sbc     #$00
-	bvc     L003E
-	eor     #$80
-L003E:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L003A
-	inc     _i+1
-	bra     L003A
-L009D:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0041:	lda     _i
-	cmp     #$06
-	lda     _i+1
-	sbc     #$00
-	bvc     L0045
-	eor     #$80
-L0045:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0041
-	inc     _i+1
-	bra     L0041
-L009E:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0048:	lda     _i
-	cmp     #$07
-	lda     _i+1
-	sbc     #$00
-	bvc     L004C
-	eor     #$80
-L004C:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0048
-	inc     _i+1
-	bra     L0048
-L009F:	lda     #$01
-	sta     _i
-	stz     _i+1
-L004F:	lda     _i
-	cmp     #$08
-	lda     _i+1
-	sbc     #$00
-	bvc     L0053
-	eor     #$80
-L0053:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L004F
-	inc     _i+1
-	bra     L004F
-L00A0:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0056:	lda     _i
-	cmp     #$09
-	lda     _i+1
-	sbc     #$00
-	bvc     L005A
-	eor     #$80
-L005A:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0056
-	inc     _i+1
-	bra     L0056
-L00A1:	lda     #$01
-	sta     _i
-	stz     _i+1
-L005D:	lda     _i
-	cmp     #$0A
-	lda     _i+1
-	sbc     #$00
-	bvc     L0061
-	eor     #$80
-L0061:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L005D
-	inc     _i+1
-	bra     L005D
-L00A2:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0064:	lda     _i
-	cmp     #$0B
-	lda     _i+1
-	sbc     #$00
-	bvc     L0068
-	eor     #$80
-L0068:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0064
-	inc     _i+1
-	bra     L0064
-L00A3:	lda     #$01
-	sta     _i
-	stz     _i+1
-L006B:	lda     _i
-	cmp     #$0C
-	lda     _i+1
-	sbc     #$00
-	bvc     L006F
-	eor     #$80
-L006F:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L006B
-	inc     _i+1
-	bra     L006B
-L00A4:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0072:	lda     _i
-	cmp     #$0D
-	lda     _i+1
-	sbc     #$00
-	bvc     L0076
-	eor     #$80
-L0076:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0072
-	inc     _i+1
-	bra     L0072
-L00A5:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0079:	lda     _i
-	cmp     #$0E
-	lda     _i+1
-	sbc     #$00
-	bvc     L007D
-	eor     #$80
-L007D:	jpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0079
-	inc     _i+1
-	bra     L0079
-L00A6:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0080:	lda     _i
-	cmp     #$0F
-	lda     _i+1
-	sbc     #$00
-	bvc     L0084
-	eor     #$80
-L0084:	bpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0080
-	inc     _i+1
-	bra     L0080
-L00A7:	lda     #$01
-	sta     _i
-	stz     _i+1
-L0087:	lda     _i
-	cmp     #$10
-	lda     _i+1
-	sbc     #$00
-	bvc     L008B
-	eor     #$80
-L008B:	bpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L0087
-	inc     _i+1
-	bra     L0087
-L00A8:	lda     #$01
-	sta     _i
-	stz     _i+1
-L008E:	lda     _i
-	cmp     #$11
-	lda     _i+1
-	sbc     #$00
-	bvc     L0092
-	eor     #$80
-L0092:	bpl     L0007
-	jsr     _delay
-	inc     _i
-	bne     L008E
-	inc     _i+1
-	bra     L008E
-L00A9:	stz     _playing
-	stz     _playing+1
+	inx
+L002C:	jsr     _delay
+	bra     L004B
+L0045:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L002E
+	inx
+L002E:	jsr     _delay
+	bra     L004B
+L0046:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0030
+	inx
+L0030:	jsr     _delay
+	bra     L004B
+L0047:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0032
+	inx
+L0032:	jsr     _delay
+	bra     L004B
+L0048:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0034
+	inx
+L0034:	jsr     _delay
+	bra     L004B
+L0049:	lda     _cmd
+	ldy     #$70
+	jsr     decaxy
+	ina
+	bne     L0036
+	inx
+L0036:	jsr     _delay
+	bra     L004B
+L004A:	stz     _playing
 	jsr     _ym_init
 	lda     #<(S0001)
 	ldx     #>(S0001)
 	jsr     _print_f
-L0007:	lda     _playing+1
-	bne     L00AA
-	lda     _playing
+L004B:	lda     _playing
 	cmp     #$01
 	jeq     L0002
-L00AA:	jmp     incsp2
+	rts
 
 .endproc
 
@@ -4480,82 +3007,80 @@ L00AA:	jmp     incsp2
 
 .segment	"CODE"
 
-	lda     #<(S0002)
-	ldx     #>(S0002)
-	jsr     _print_f
-	stz     _line
-	stz     _line+1
-	stz     _note
-	stz     _note+1
 	jsr     _ym_init
-L0014:	lda     #<(_Chaos_emerald)
-	ldx     #>(_Chaos_emerald)
+	lda     #<(_Chaos_emerald+64)
+	ldx     #>(_Chaos_emerald+64)
+L0014:	jsr     _init_read
 	jsr     _PlaySong
 L0002:	jsr     _acia_getc
 	sta     _c
 	cmp     #$30
-	beq     L000A
-	cmp     #$31
 	beq     L000B
-	cmp     #$32
+	cmp     #$31
 	beq     L000C
-	cmp     #$33
+	cmp     #$32
 	beq     L000D
-	cmp     #$34
+	cmp     #$33
 	beq     L000E
-	cmp     #$35
+	cmp     #$34
 	beq     L000F
-	cmp     #$36
+	cmp     #$35
 	beq     L0010
-	cmp     #$37
+	cmp     #$36
 	beq     L0011
+	cmp     #$37
+	beq     L0012
 	cmp     #$46
-	beq     L0008
-	cmp     #$50
 	beq     L0009
+	cmp     #$50
+	beq     L000A
+	cmp     #$53
+	beq     L0007
 	cmp     #$57
-	bne     L0002
-	lda     #<(S0003)
-	ldx     #>(S0003)
+	beq     L0008
+	bra     L0002
+L0007:	jsr     _getBytes
+	jsr     _acia_putc
+	bra     L0002
+L0008:	lda     #<(S0002)
+	ldx     #>(S0002)
 	jsr     _print_f
 	jsr     _write_to_BANK
 	bra     L0002
-L0008:	lda     #<(S0004)
-	ldx     #>(S0004)
+L0009:	lda     #<(S0003)
+	ldx     #>(S0003)
 	jsr     _print_f
 	jsr     _format_bank
 	bra     L0002
-L0009:	lda     #<(S0005)
-	ldx     #>(S0005)
+L000A:	lda     #<(S0004)
+	ldx     #>(S0004)
 	jsr     _print_f
 	jsr     _ym_init
-	lda     #$37
-	jsr     pusha0
-	lda     #$00
-	jsr     _play_song_from_bank
+	ldx     #$80
+	lda     #$40
 	bra     L0014
-L000A:	lda     #$00
+L000B:	lda     #$00
 	jsr     _set_bank
 	bra     L0002
-L000B:	lda     #$01
+L000C:	lda     #$01
 	jsr     _set_bank
 	bra     L0002
-L000C:	lda     #$02
+L000D:	lda     #$02
 	jsr     _set_bank
 	bra     L0002
-L000D:	lda     #$03
-	jsr     _set_bank
-	bra     L0002
-L000E:	lda     #$04
+L000E:	lda     #$03
 	jsr     _set_bank
 	jmp     L0002
-L000F:	lda     #$05
+L000F:	lda     #$04
 	jsr     _set_bank
 	jmp     L0002
-L0010:	lda     #$06
+L0010:	lda     #$05
 	jsr     _set_bank
 	jmp     L0002
-L0011:	lda     #$07
+L0011:	lda     #$06
+	jsr     _set_bank
+	jmp     L0002
+L0012:	lda     #$07
 	jsr     _set_bank
 	jmp     L0002
 
