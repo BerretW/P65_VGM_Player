@@ -50,7 +50,7 @@ void PlaySong(){
         CharH = getBytes();
         for (i=0; i <= CharH; ++i){
           for (i2 = 0; i2 <= CharL; ++i2){
-            delay(1);
+          cmd = cmd;
           }
         }
         break;
@@ -61,52 +61,52 @@ void PlaySong(){
           delay(835);
       break;
       case 0x70:
-          delay(cmd-0x70+1);
+          delay(11);
       break;
       case 0x71:
-          delay(cmd-0x70+1);
+          delay(22);
       break;
       case 0x72:
-          delay(cmd-0x70+1);
+          delay(33);
       break;
       case 0x73:
-          delay(cmd-0x70+1);
+          delay(44);
       break;
       case 0x74:
-          delay(cmd-0x70+1);
+          delay(55);
       break;
       case 0x75:
-          delay(cmd-0x70+1);
+          delay(66);
       break;
       case 0x76:
-          delay(cmd-0x70+1);;
+          delay(77);
       break;
       case 0x77:
-          delay(cmd-0x70+1);
+          delay(88);
       break;
       case 0x78:
-          delay(cmd-0x70+1);
+          delay(99);
       break;
       case 0x79:
-          delay(cmd-0x70+1);
+          delay(110);
       break;
       case 0x7A:
-          delay(cmd-0x70+1);
+          delay(121);
       break;
       case 0x7B:
-          delay(cmd-0x70+1);
+          delay(132);
       break;
       case 0x7C:
-          delay(cmd-0x70+1);
+          delay(143);
       break;
       case 0x7D:
-          delay(cmd-0x70+1);
+          delay(154);
       break;
       case 0x7E:
-          delay(cmd-0x70+1);
+          delay(165);
       break;
       case 0x7F:
-          delay(cmd-0x70+1);
+          delay(176);
       break;
       case 0x66:
         playing = 0;
@@ -149,7 +149,7 @@ void main(void) {
     break;
 
     case 'P':
-      set_bank(0);
+      //set_bank(0);
       print_f("Spoustim song");
       //set_song_pos(0x0100);
       ym_init();

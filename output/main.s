@@ -2753,7 +2753,7 @@ _cmd:
 
 	lda     #$01
 	sta     _playing
-	jmp     L004B
+	jmp     L003B
 L0002:	jsr     _getBytes
 	sta     _cmd
 	ldx     #$00
@@ -2771,53 +2771,53 @@ L0002:	jsr     _getBytes
 	cmp     #$63
 	jeq     L0016
 	cmp     #$66
-	jeq     L004A
-	cmp     #$70
 	jeq     L003A
+	cmp     #$70
+	jeq     L002A
 	cmp     #$71
-	jeq     L003B
+	jeq     L002B
 	cmp     #$72
-	jeq     L003C
+	jeq     L002C
 	cmp     #$73
-	jeq     L003D
+	jeq     L002D
 	cmp     #$74
-	jeq     L003E
+	jeq     L002E
 	cmp     #$75
-	jeq     L003F
+	jeq     L002F
 	cmp     #$76
-	jeq     L0040
+	jeq     L0030
 	cmp     #$77
-	jeq     L0041
+	jeq     L0031
 	cmp     #$78
-	jeq     L0042
+	jeq     L0032
 	cmp     #$79
-	jeq     L0043
+	jeq     L0033
 	cmp     #$7A
-	jeq     L0044
+	jeq     L0034
 	cmp     #$7B
-	jeq     L0045
+	jeq     L0035
 	cmp     #$7C
-	jeq     L0046
+	jeq     L0036
 	cmp     #$7D
-	jeq     L0047
+	jeq     L0037
 	cmp     #$7E
-	jeq     L0048
+	jeq     L0038
 	cmp     #$7F
-	jeq     L0049
-	jmp     L004B
+	jeq     L0039
+	jmp     L003B
 L0007:	jsr     _getBytes
 	jsr     _sn_write_data
-	jmp     L004B
+	jmp     L003B
 L0008:	jsr     _getBytes
 	jsr     pusha
 	jsr     _getBytes
 	jsr     _ym_setreg
-	jmp     L004B
+	jmp     L003B
 L0009:	jsr     _getBytes
 	jsr     pusha
 	jsr     _getBytes
 	jsr     _ym_setreg_A1
-	jmp     L004B
+	jmp     L003B
 L000A:	jsr     _getBytes
 	sta     _CharL
 	jsr     _getBytes
@@ -2829,20 +2829,19 @@ L000B:	lda     _i
 	jsr     pushax
 	lda     _CharH
 	jsr     tosicmp0
-	beq     L0038
-	jpl     L004B
-L0038:	stz     _i2
+	beq     L0028
+	jpl     L003B
+L0028:	stz     _i2
 	stz     _i2+1
 L0010:	lda     _i2
 	ldx     _i2+1
 	jsr     pushax
 	lda     _CharL
 	jsr     tosicmp0
-	beq     L0039
+	beq     L0029
 	bpl     L000D
-L0039:	ldx     #$00
-	lda     #$01
-	jsr     _delay
+L0029:	lda     _cmd
+	sta     _cmd
 	inc     _i2
 	bne     L0010
 	inc     _i2+1
@@ -2854,146 +2853,66 @@ L000D:	inc     _i
 L0015:	ldx     #$02
 	lda     #$DF
 	jsr     _delay
-	jmp     L004B
+	jmp     L003B
 L0016:	ldx     #$03
 	lda     #$43
 	jsr     _delay
-	jmp     L004B
-L003A:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0018
-	inx
-L0018:	jsr     _delay
-	jmp     L004B
-L003B:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L001A
-	inx
-L001A:	jsr     _delay
-	jmp     L004B
-L003C:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L001C
-	inx
-L001C:	jsr     _delay
-	jmp     L004B
-L003D:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L001E
-	inx
-L001E:	jsr     _delay
-	jmp     L004B
-L003E:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0020
-	inx
-L0020:	jsr     _delay
-	jmp     L004B
-L003F:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0022
-	inx
-L0022:	jsr     _delay
-	jmp     L004B
-L0040:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0024
-	inx
-L0024:	jsr     _delay
-	jmp     L004B
-L0041:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0026
-	inx
-L0026:	jsr     _delay
-	jmp     L004B
-L0042:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0028
-	inx
-L0028:	jsr     _delay
-	jmp     L004B
-L0043:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L002A
-	inx
-L002A:	jsr     _delay
-	bra     L004B
-L0044:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L002C
-	inx
-L002C:	jsr     _delay
-	bra     L004B
-L0045:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L002E
-	inx
-L002E:	jsr     _delay
-	bra     L004B
-L0046:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0030
-	inx
-L0030:	jsr     _delay
-	bra     L004B
-L0047:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0032
-	inx
-L0032:	jsr     _delay
-	bra     L004B
-L0048:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0034
-	inx
-L0034:	jsr     _delay
-	bra     L004B
-L0049:	lda     _cmd
-	ldy     #$70
-	jsr     decaxy
-	ina
-	bne     L0036
-	inx
-L0036:	jsr     _delay
-	bra     L004B
-L004A:	stz     _playing
+	jmp     L003B
+L002A:	lda     #$0B
+	jsr     _delay
+	bra     L003B
+L002B:	lda     #$16
+	jsr     _delay
+	bra     L003B
+L002C:	lda     #$21
+	jsr     _delay
+	bra     L003B
+L002D:	lda     #$2C
+	jsr     _delay
+	bra     L003B
+L002E:	lda     #$37
+	jsr     _delay
+	bra     L003B
+L002F:	lda     #$42
+	jsr     _delay
+	bra     L003B
+L0030:	lda     #$4D
+	jsr     _delay
+	bra     L003B
+L0031:	lda     #$58
+	jsr     _delay
+	bra     L003B
+L0032:	lda     #$63
+	jsr     _delay
+	bra     L003B
+L0033:	lda     #$6E
+	jsr     _delay
+	bra     L003B
+L0034:	dea
+	jsr     _delay
+	bra     L003B
+L0035:	lda     #$84
+	jsr     _delay
+	bra     L003B
+L0036:	lda     #$8F
+	jsr     _delay
+	bra     L003B
+L0037:	lda     #$9A
+	jsr     _delay
+	bra     L003B
+L0038:	lda     #$A5
+	jsr     _delay
+	bra     L003B
+L0039:	lda     #$B0
+	jsr     _delay
+	bra     L003B
+L003A:	stz     _playing
 	jsr     _ym_init
 	jsr     _sn_init
 	lda     #<(S0001)
 	ldx     #>(S0001)
 	jsr     _print_f
-L004B:	lda     _playing
+L003B:	lda     _playing
 	cmp     #$01
 	jeq     L0002
 	rts
@@ -3028,17 +2947,17 @@ L0002:	jsr     _acia_getc
 	cmp     #$31
 	beq     L000C
 	cmp     #$32
-	jeq     L000D
+	beq     L000D
 	cmp     #$33
-	jeq     L000E
+	beq     L000E
 	cmp     #$34
-	jeq     L000F
+	beq     L000F
 	cmp     #$35
-	jeq     L0010
+	beq     L0010
 	cmp     #$36
-	jeq     L0011
+	beq     L0011
 	cmp     #$37
-	jeq     L0012
+	beq     L0012
 	cmp     #$46
 	beq     L0009
 	cmp     #$50
@@ -3061,22 +2980,20 @@ L0009:	lda     #<(S0004)
 	jsr     _print_f
 	jsr     _format_bank
 	bra     L0002
-L000A:	lda     #$00
-	jsr     _set_bank
-	lda     #<(S0005)
+L000A:	lda     #<(S0005)
 	ldx     #>(S0005)
 	jsr     _print_f
 	jsr     _ym_init
 	ldx     #$80
 	lda     #$40
 	jsr     _init_read
-	jmp     L0013
+	bra     L0013
 L000B:	lda     #$00
 	jsr     _set_bank
-	jmp     L0002
+	bra     L0002
 L000C:	lda     #$01
 	jsr     _set_bank
-	jmp     L0002
+	bra     L0002
 L000D:	lda     #$02
 	jsr     _set_bank
 	jmp     L0002
