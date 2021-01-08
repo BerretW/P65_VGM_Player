@@ -18,7 +18,7 @@
 .export _set_bank
 
 .code
-
+.import _acia_putc
 ;Set up VIA
 _timer_setup:	        lda #$0
 							        sta VIA_T1C_L    ; init timer
@@ -31,7 +31,10 @@ _timer_setup:	        lda #$0
 							        RTS
 
 _set_bank:
-					STA BANKDISK
+					STA BANK_BASE
+					CLC
+					ADC #$30
+					JSR _acia_putc
 					RTS
 
 _format_bank:     	LDY #0
@@ -70,6 +73,10 @@ _write_to_BANK:
 					CPX #$C0
 					BNE @end_BANK
           INC BANK_BASE
+					LDA BANK_BASE
+					CLC
+					ADC #$30
+					JSR _acia_putc
 					JMP _write_to_BANK
 @end_BANK:			JMP @write_BANK
 

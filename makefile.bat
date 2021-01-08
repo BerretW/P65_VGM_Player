@@ -8,10 +8,11 @@ ca65 --cpu 65C02 vectors.asm -o ..\output\vectors.o
 ca65 --cpu 65C02 acia.asm -o ..\output\acia.o
 ca65 --cpu 65C02 interrupts.asm -o ..\output\interrupts.o
 ca65 --cpu 65C02 ym2612.asm -o ..\output\ym2612.o
+ca65 --cpu 65C02 sn76489.asm -o ..\output\sn76489.o
 
 move *.s ..\output
 
 cd ..\output
 
-ld65 -C ..\config\APP_RAM_DISK.cfg -m main.map main.o utils.o acia.o ym2612.o interrupts.o vectors.o ..\library\p65.lib -o ..\output\RAM.bin
-ld65 -C ..\config\APP.cfg -m main.map main.o utils.o acia.o ym2612.o interrupts.o vectors.o ..\library\p65.lib -o ..\output\ROM.bin
+ld65 -C ..\config\APP_RAM_DISK.cfg -m main.map main.o utils.o acia.o ym2612.o sn76489.o interrupts.o vectors.o ..\library\p65.lib -o ..\output\RAM.bin
+ld65 -C ..\config\APP.cfg -m main.map main.o utils.o acia.o ym2612.o sn76489.o interrupts.o vectors.o ..\library\p65.lib -o ..\output\ROM.bin

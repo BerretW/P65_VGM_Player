@@ -6,7 +6,7 @@
 #include "ym2612.h"
 #include "utils.h"
 #include "Chaos_emerald.h"
-
+#include "sn76489.h"
 char c;
 int line;
 int note;
@@ -33,11 +33,11 @@ void PlaySong(){
 	while(playing == 1){
     //delay(1);
     cmd = getBytes();
+
     //acia_putc(cmd);
     switch (cmd) {
       case 0x50:
-        CharL = getBytes();
-        delay(1);
+        sn_write_data(getBytes());
         break;
       case 0x52:
         ym_setreg(getBytes(),getBytes());
@@ -111,6 +111,7 @@ void PlaySong(){
       case 0x66:
         playing = 0;
         ym_init();
+        sn_init();
         print_f("Konec songu");
 
       break;
@@ -123,11 +124,11 @@ void PlaySong(){
 
 
 void main(void) {
-  //print_f("Appartus VGM Player Vas vita");
+  print_f("Appartus VGM Player Vas vita");
   ym_init();
-
+  sn_init();
   init_read(Chaos_emerald+0x40);
-
+  set_bank(0);
   //acia_putc(getBytes());
   PlaySong();
 
@@ -148,6 +149,7 @@ void main(void) {
     break;
 
     case 'P':
+      set_bank(0);
       print_f("Spoustim song");
       //set_song_pos(0x0100);
       ym_init();

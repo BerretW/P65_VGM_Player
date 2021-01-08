@@ -19,6 +19,7 @@ _song_pos:			.res 2
 .export _ym_write_reg_A1
 .export _ym_init
 .export _delay
+.export __delay2
 .export _ym_setreg
 .export _ym_setreg_A1
 .export _getBytes
@@ -218,7 +219,7 @@ _delay2:				DEX
 								BNE _delay1
 _dend:           RTS
 
-__delay2:				LDX #$FF
+__delay2:				LDX #$2
 __delay3:				DEX
                 BNE __delay3
                 RTS
