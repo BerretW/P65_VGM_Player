@@ -72,85 +72,85 @@ _ym_setreg_A1:
             jmp incsp2
 _ym_init:
             LDA #$FF
-            STA VIA_DDRA
-            STA VIA_DDRB
+            STA YM_VIA_DDRA
+            STA YM_VIA_DDRB
             LDA #%11111100
-            STA VIA_ORB
+            STA YM_VIA_ORB
             jsr _delay
             LDA #%11111000
-            STA VIA_ORB
+            STA YM_VIA_ORB
             jsr _delay2
             jsr _delay2
             LDA #%11111100
-            STA VIA_ORB
+            STA YM_VIA_ORB
             RTS
 
 _ym_write_data:
             PHA
             LDX #%11110101
-            STX VIA_ORB
+            STX YM_VIA_ORB
             ;jsr _delay
             PLA
-            STA VIA_ORA
+            STA YM_VIA_ORA
             ;JSR _delay
             LDX #%11010101
-            STX VIA_ORB
+            STX YM_VIA_ORB
             ;jsr _delay
             LDX #%11110101
-            STX VIA_ORB
+            STX YM_VIA_ORB
             ;jsr _delay
             LDX #%11111100
-            STX VIA_ORB
+            STX YM_VIA_ORB
             RTS
 _ym_write_data_A1:
             PHA
             LDX #%11110111
-            STX VIA_ORB
+            STX YM_VIA_ORB
             ;jsr _delay
             PLA
-            STA VIA_ORA
+            STA YM_VIA_ORA
             ;JSR _delay
             LDX #%11010111
-            STX VIA_ORB
+            STX YM_VIA_ORB
             ;jsr _delay
             LDX #%11110111
-            STX VIA_ORB
+            STX YM_VIA_ORB
             ;jsr _delay
             LDX #%11111100
-            STX VIA_ORB
+            STX YM_VIA_ORB
             RTS
 
 _ym_write_reg:  PHA
                 LDX #%11110100
-                STX VIA_ORB
+                STX YM_VIA_ORB
                 ;jsr _delay
                 PLA
-                STA VIA_ORA
+                STA YM_VIA_ORA
                 ;jsr _delay
                 LDX #%11010100
-                STX VIA_ORB
+                STX YM_VIA_ORB
                 ;jsr _delay
                 LDX #%11110100
-                STX VIA_ORB
+                STX YM_VIA_ORB
                 ;jsr _delay
                 LDX #%11111100
-                STX VIA_ORB
+                STX YM_VIA_ORB
                 RTS
 _ym_write_reg_A1:   PHA
                     LDX #%11110110
-                    STX VIA_ORB
+                    STX YM_VIA_ORB
                     ;jsr _delay
                     PLA
-                    STA VIA_ORA
+                    STA YM_VIA_ORA
                   ;  jsr _delay
                     LDX #%11010110
-                    STX VIA_ORB
+                    STX YM_VIA_ORB
                     ;jsr _delay
                     LDX #%11110110
-                    STX VIA_ORB
+                    STX YM_VIA_ORB
                     ;jsr _delay
                     LDX #%11111100
-                    STX VIA_ORB
+                    STX YM_VIA_ORB
                     RTS
 
 ; ---------------------------------------------------------------

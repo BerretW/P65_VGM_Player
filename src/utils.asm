@@ -21,13 +21,13 @@
 .import _acia_putc
 ;Set up VIA
 _timer_setup:	        lda #$0
-							        sta VIA_T1C_L    ; init timer
+							        sta VIA1_T1C_L    ; init timer
 											LDA #$FF
-							        sta VIA_T1C_H
+							        sta VIA1_T1C_H
 							        lda #$40
-							        sta VIA_ACR     ; T1 continuous mode
+							        sta VIA1_ACR     ; T1 continuous mode
 							        lda #$c0
-							        sta VIA_IER     ; enable T1
+							        sta VIA1_IER     ; enable T1
 							        RTS
 
 _set_bank:

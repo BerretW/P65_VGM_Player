@@ -2932,7 +2932,6 @@ L003B:	lda     _playing
 	lda     #<(S0002)
 	ldx     #>(S0002)
 	jsr     _print_f
-	jsr     _ym_init
 	jsr     _sn_init
 	lda     #<(_Chaos_emerald+64)
 	ldx     #>(_Chaos_emerald+64)

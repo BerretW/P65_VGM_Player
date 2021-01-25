@@ -23,7 +23,6 @@ char cmd;
 void print_f(char * s){
   acia_put_newline();
   acia_puts(s);
-
 }
 
 
@@ -41,9 +40,11 @@ void PlaySong(){
         break;
       case 0x52:
         ym_setreg(getBytes(),getBytes());
+        //delay(11);
         break;
       case 0x53:
         ym_setreg_A1(getBytes(),getBytes());
+        //delay(11);
         break;
       case 0x61:
         CharL = getBytes();
@@ -125,7 +126,7 @@ void PlaySong(){
 
 void main(void) {
   print_f("Appartus VGM Player Vas vita");
-  ym_init();
+  //ym_init();
   sn_init();
   init_read(Chaos_emerald+0x40);
   set_bank(0);
